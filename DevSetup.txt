@@ -1,0 +1,24 @@
+Dev IDE Visual Studio Code
+
+https://reactjs.org/docs/create-a-new-react-app.html
+
+npx create-react-app dialog-engine
+
+cd dialog-engine
+
+npm start (confirm basic app runs)
+
+npm install react-hot-loader --save-dev
+
+copy backup\dialog-engine\src
+copy backup\   root files:
+
+	bmurder_txt.zip  (original)
+	Clue*.txt
+	DevNextSteps.txt
+	DevSetup.txt
+	Invitation.txt	
+	StartingInfo.txt
+		
+npm start
+      
