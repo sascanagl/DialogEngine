@@ -165,10 +165,6 @@ class App extends Component{
     );
   }
 
-  componentWillMount(){
-      //
-  }
-
   componentDidMount(){
       window.addEventListener('beforeunload', this.componentSaveState);
       let newGameState = this.state.gameState;
