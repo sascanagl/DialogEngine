@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {hot} from "react-hot-loader";
 import "./App.css";
+// eslint-disable-next-line no-unused-vars
 import AgentInfo, {raceOptions     as races,
                    genderOptions   as genders, 
                    skinOptions     as skinColors, 

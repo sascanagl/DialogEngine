@@ -1,14 +1,14 @@
 import React, {Component} from "react";
-import {hot}              from "react-hot-loader";
 import "./App.css";
 import LoopProcessor      from "./LoopProcessor";
 import DialogState        from "./DialogState";
 import MainContent        from "./MainContent";
 import AgentInfo          from "./AgentInfo";
 import LocationInfo       from "./LocationInfo";
-import LoopInfo           from "./LoopInfo";
 import GameState          from "./GameState";
 import BusinessMurder     from "./BusinessMurder";
+import AudioFlags         from "./AudioFlags";
+
 
 class App extends Component{
 
@@ -25,6 +25,7 @@ class App extends Component{
     this.componentClearState = this.componentClearState.bind(this);
     this.handleResetGame = this.handleResetGame.bind(this);
     this.componentStartGame = this.componentStartGame.bind(this);
+    this.handleAudio = this.handleAudio.bind(this);
 
     this.componentStartGame();
   }
@@ -37,10 +38,12 @@ class App extends Component{
                    gameState: new GameState({     location: new LocationInfo({ locHandler: this.handleLocationChange,
                                                                                 npcHandler: this.handleNPCChange }),
                                                   player:   new AgentInfo(   { handler: this.handleProfileChange }),
+                                                  audioFlags: new AudioFlags({environ:true,narrate:true,atmos:true}),
                                                   envHandler: this.handleEnvironment,
                                                   insHandler: this.handleInputs,
                                                   outHandler: this.handleOutputs,
-                                                  resetHandler: this.handleResetGame 
+                                                  resetHandler: this.handleResetGame,
+                                                  audioHandler:  this.handleAudio
                                                   /* loop: new LoopInfo() defaults*/                              
                                            })
     };
@@ -64,6 +67,23 @@ class App extends Component{
       localStorage.setItem("world", this.state.gameState.location.world);
       localStorage.setItem("zone",  this.state.gameState.location.zone);
       localStorage.setItem("zones", JSON.stringify(this.state.gameState.location.zoneInfo));
+  }
+
+  // handle updates to audio controls (AudioFlags)
+  handleAudio(evt){
+    console.log("App.handleAudio processing event.");
+    let newGameState = this.state.gameState;
+    let newAudioFlags = newGameState.audioFlags;
+    switch(evt.target.id){
+      case "narrate": newAudioFlags.narrate = evt.target.checked; break;
+      case "environ": newAudioFlags.environ = evt.target.checked; break;
+      case "atmos"  : newAudioFlags.atmos = evt.target.checked; break;
+      default:
+        console.log("App.handleAudio IGNORED event from target.id '"+ evt.target.id +"'");
+      }
+    newGameState.audioFlags = newAudioFlags;
+    this.setState({gameState: newGameState});
+    this.loopTimer = setInterval(()=>this.handleLoopState(), 2000);
   }
 
   // handle updates to the PlayerDialogPane
@@ -102,7 +122,7 @@ class App extends Component{
     const evtValue = evt.target.value;
     let newGameState = this.state.gameState;
     let newLocation = newGameState.location;
-    if( evt.target.id == 'zone' ){
+    if( evt.target.id === 'zone' ){
       newLocation.zone = evtValue;
     }else{
       newLocation.world = evtValue;
@@ -149,7 +169,9 @@ class App extends Component{
       case "cleanliness": newPlayer.cleanliness = value; break;
       case "beauty"     : newPlayer.beauty = value     ; break;
       case "strength"   : newPlayer.strength = value   ; break;
-    }
+      default:
+        console.log("App.handleProfileChange IGNORED an unknown field name.");
+      }
     newGameState.player = newPlayer;
     this.setState({gameState: newGameState});
     this.loopTimer = setInterval(()=>this.handleLoopState(), 2000);

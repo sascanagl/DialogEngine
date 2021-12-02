@@ -31,9 +31,9 @@ class LoopProcessor {
      */
     constructor(props){
         this.name                = props.name       ?? "Test Game";
-        this.envHandler          = props.envHandler ?? "javascript:void";
-        this.insHandler          = props.insHandler ?? "javascript:void";
-        this.outHandler          = props.outHandler ?? "javascript:void";
+        this.envHandler          = props.envHandler; // javascript:void()
+        this.insHandler          = props.insHandler; // javascript:void()
+        this.outHandler          = props.outHandler; // javascript:void()
         this.lastRow             = props.lastRow    ?? -1;
         this.logic               = props.logic      ?? [];
 

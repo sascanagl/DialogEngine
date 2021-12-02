@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import {hot} from "react-hot-loader";
 import "./App.css";
-import LocationInfo  from "./LocationInfo";
 
 class NPCSelector extends Component{
 
@@ -20,7 +18,7 @@ class NPCSelector extends Component{
     render(){
       let npcOptions = this.composeOptions(this.props.gameState.location.zone); //zone = zoneId only
       return(
-        <section className="NPCSelector">
+        //<section className="NPCSelector">
           <table className="NPCSelectorTable">
             <thead className="NPCSelectorHeader">
             <tr><th>Talk To</th></tr>
@@ -34,7 +32,7 @@ class NPCSelector extends Component{
             </tr>
             </tbody>
           </table>
-        </section>
+        //</section>
       );
     }
   }

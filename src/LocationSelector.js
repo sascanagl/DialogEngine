@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import {hot} from "react-hot-loader";
 import "./App.css";
-import LocationInfo from "./LocationInfo";
 
 class LocationSelector extends Component{
     
@@ -11,7 +9,7 @@ class LocationSelector extends Component{
     }
 
     composeOptions(zoneId){
-        let zs = new Array();
+        let zs = [];
         zs.push({id:"none", display:""});
         let adjacents = this.props.gameState.location.getZone(zoneId).adjacents;
         adjacents.forEach((zid, index, array ) =>{
@@ -26,19 +24,14 @@ class LocationSelector extends Component{
       let zoneOptions  = this.composeOptions(this.props.gameState.location.zone); //zone = zoneId only
 
       return(
-        <section className="LocationSelector">
+        //<section className="LocationSelector">
           <table className="LocationSelectorTable">
             <thead className="LocationSelectorHeader">
             <tr>
-            {/*<th>World</th>*/}
             <th>Move To</th></tr>
             </thead>
             <tbody className="LocationSelectorContent">
               <tr>
-                {/* <td><select value={this.props.gameState.location.world} id="world" name="world" size="1" 
-                     onChange={(evt) => {this.props.gameState.location.locHandler(evt)}} >
-                     {worldOptions}
-                </select></td> */}
                 <td><select value={this.props.gameState.location.zone} id="zone" name="zone" size="1"
                      onChange={(evt) => {this.props.gameState.location.locHandler(evt)}} >
                      {zoneOptions}
@@ -46,7 +39,7 @@ class LocationSelector extends Component{
               </tr>
             </tbody>
           </table>
-        </section>
+        //</section>
       );
     }
   }    
