@@ -20,7 +20,8 @@ class LocationSelector extends Component{
     }
   
     render(){
-      //let worldOptions = this.composeOptions(worlds);     
+      console.log("LocationSelector rendering...");
+      //let worldOptions = this.composeOptions(worlds);
       let zoneOptions  = this.composeOptions(this.props.gameState.location.zone); //zone = zoneId only
 
       return(
@@ -42,5 +43,5 @@ class LocationSelector extends Component{
         //</section>
       );
     }
-  }    
+  }
   export default LocationSelector;

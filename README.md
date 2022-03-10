@@ -1,5 +1,7 @@
 # Dialog Engine
 
+***Some of the "data" associated with this project is transitioning to the [DialogServer](https://github.com/sascanagl/DialogServer) midtier.  This README has not been fully updated accordingly.***
+
 This project is my experimentation in implementing a game engine logic tree as I remember seeing it in the Oblivion World Construction Kit.  I did not go back and look at the actual implementation.  Having seen it years ago, and grasping the concept, I have decided to implement something like that as my first exercise in developing something with React.
 
 ## App

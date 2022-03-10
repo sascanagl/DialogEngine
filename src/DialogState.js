@@ -9,6 +9,7 @@ class DialogState extends Component{
     }
 
     render(){
+      console.log("DialogState rendering...");
       return(
           <div className="DialogState">
               <table className="DialogStateTable">

@@ -13,20 +13,22 @@ class DialogOptions extends Component{
 
     composeOptions(arrList){
         let i=0;
-        return arrList.map((item) =><div key={"option" + i++}><a className="nounderline" 
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
+        return arrList.map((item) =><div key={"option" + i++}><a className="nounderline"
                                                                 onClick = {(evt) => { this.props.gameState.outHandler(
                                                                                       new OutTriggerActions({trigger:item.trigger,
                                                                                                              actions:item.actions}))}}
-                                                                nofollow="true" > => {item.message} </a></div>);
+                                                                nofollow="true" > {item.message} </a></div>);
     }
 
     render(){
-      let linkOptions  = this.composeOptions(this.props.gameState.outOptions);             
+      console.log("DialogOptions rendering...");
+      let linkOptions  = this.composeOptions(this.props.gameState.outOptions);
       return(
         <section className="DialogOptions">
             {linkOptions}
         </section>
       );
     }
-  }    
+  }
   export default DialogOptions;

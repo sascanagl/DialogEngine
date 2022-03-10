@@ -11,6 +11,7 @@ class AudioFlags extends Component{
     }
 
     render(){
+      console.log("AudioFlags rendering...");
       return(
           <table className="AudioFlagsTable">
             <thead className="AudioFlagsHeader">
@@ -21,19 +22,25 @@ class AudioFlags extends Component{
                 <td><input type="checkbox" checked={this.props.gameState.audioFlags.narrate} 
                                            id="narrate" name="narrate" 
                                            onChange={(evt) => {this.props.gameState.audioHandler(evt)}} >
-                </input><label for="narrate">Narrate</label></td>
+                </input><label for="narrate">Narrate</label>
+                <audio id="voice_narrate" name="voice_narrate" autoPlay></audio>
+                </td>
               </tr>
               <tr>
                 <td><input type="checkbox" checked={this.props.gameState.audioFlags.environ} 
                                            id="environ" name="environ" 
                                            onChange={(evt) => {this.props.gameState.audioHandler(evt)}} >
-                </input><label for="environ">Environ</label></td>
+                </input><label for="environ">Environ</label>
+                <audio id="voice_environ" name="voice_environ" autoPlay></audio>
+                </td>
               </tr>
               <tr>
                 <td><input type="checkbox" checked={this.props.gameState.audioFlags.atmos} 
                                            id="atmos" name="atmos" 
                                            onChange={(evt) => {this.props.gameState.audioHandler(evt)}} >
-                </input><label for="atmos">Atmos</label></td>
+                </input><label for="atmos">Atmos</label>
+                <audio id="voice_atmos" name="voice_atmos" autoPlay></audio>
+                </td>
               </tr>
             </tbody>
           </table>

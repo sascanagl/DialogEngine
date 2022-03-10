@@ -16,6 +16,7 @@ class NPCSelector extends Component{
     }
   
     render(){
+      console.log("NPCSelector rendering...");
       let npcOptions = this.composeOptions(this.props.gameState.location.zone); //zone = zoneId only
       return(
         //<section className="NPCSelector">

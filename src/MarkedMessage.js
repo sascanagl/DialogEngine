@@ -1,7 +1,3 @@
-import SynonymMap       from "./SynonymMap";
-import MessageMap       from "./MessageMap";
-import RandomMessageMap from "./RandomMessageMap";
-
 // marker = new MarkedMessage(message, startIndex, sMark);
 // if/while( marker.hasMark ) { 
 //    val = getValueFromSomewhere( marker.key ); 
@@ -12,11 +8,11 @@ const eB  = "}";   // end brace
 
 class MarkedMessage {
     constructor(message, startIndex, sMark){
-        this.message = message;
+        this.message = message ?? "";
         this.sMark = sMark;
         this.lenMark = sMark.length;
         MarkedMessage.logIt("constructor init...");
-        this.start = message.indexOf(sMark, startIndex);
+        this.start = this.message.indexOf(sMark, startIndex);
         this.hasMark = (this.start > -1);
         this.end = -1;
         this.key = null;
@@ -26,7 +22,7 @@ class MarkedMessage {
     }
 
     static logIt(msg){ /* console.log("MarkedMessage: "+ msg); */ }
-    
+
     hasKey(){
         this.key = null;
         this.safeMessage = this.message.length - this.lenMark;

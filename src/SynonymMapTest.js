@@ -1,55 +1,126 @@
 import React, {Component} from "react";
-import {hot} from "react-hot-loader";
 import SynonymMap from "./SynonymMap.js";
-
-const ucS ="uc:";
 
 class SynonymMapTest extends Component{
 
   constructor(props) {
     super(props);
-    this.keyIndex = 0;
-    this.loopCount = 0;
-    this.loopMax = 10;
-    this.state = {
-        text: "START\n"
-    };
-    this.loopDelay = 50;
     this.tick = this.tick.bind(this);
+    this.testSynonymKeys = this.testSynonymKeys.bind(this);
+    this.testSynonym = this.testSynonym.bind(this);
+    this.state = {
+      loopCount: 0,
+      loopMax: 15,
+      text: "Loading...\n",
+      loopDelay: 25,
+      error: null,
+      errCount: 0,
+      synonymKeysRun: false,
+      synonymsRun: false,
+      synonymRun: false,
+      synonymKeysDone: false,
+      synonymsDone: false,
+      synonymDone: false,
+      testComplete: false,
+      synonymKeys: [],
+      synonyms: [],
+      synonym: ""
+    };
   }
-  
+
   componentDidMount(){
-    this.keys = SynonymMap.getSynonymKeys();
-    //console.log("init keys:"+ this.keys);
-    this.keyMax = this.keys.length;
-    this.timerId = setInterval(
+  this.timerId = setInterval(
       () => this.tick(), 
-      this.loopDelay
+      this.state.loopDelay
     );
   }
+
   componentWillUnmount(){
       clearInterval(this.timerId);
   }
 
-  tick() {
-      if(this.loopCount < this.loopMax){
-        let key = this.keys[this.keyIndex];
-        let uc = Math.floor(Math.random() * 2);
-        if(uc>0) key = ucS + key; //randomly specify to capitalize the first letter
-        let value = SynonymMap.getSynonym(key);
-        //console.log("word: "+ word +" value:"+ wValue);
-        this.setState((prevState) => ({text: prevState.text + value +", "}));
-        this.loopCount = this.loopCount +1;
+  testSynonymKeys(){
+    this.setState({ synonymKeysRun: true });
+    console.log("Testing getSynonymKeys...");
+    SynonymMap.getSynonymKeys()
+    .then( response => {
+      console.log("getSynonymKeys returned...");
+      if( (!response.count) || (response.count < 1)){
+        this.setState({ synonymKeysDone: true, text: this.state.text + "No Synonym Keys returned", errCount: this.state.errCount +1 });
+        this.forceUpdate();
       }else{
-        this.loopCount = 0;
-        this.keyIndex = this.keyIndex +1;
-        if(this.keyIndex < this.keyMax){
-          this.setState((prevState) => ({text: prevState.text +'\n'}));
-        }else{
-          this.setState((prevState) => ({text: prevState.text +'\nFINISHED\n'}));
-          this.componentWillUnmount();
-        }
+        this.setState({ synonymKeysDone: true, synonymKeys: response.keys, text: this.state.text + "\nSynonym Keys:\n"+ response.keys +"\n"});
+        this.forceUpdate();
       }
+    })
+    .catch(err => {
+      console.log("getSynonymKeys returned with error...");
+      this.setState({ synonymKeysDone: true, text: this.state.text +"\n"+ err.message, errCount: this.state.errCount +1 });
+      this.forceUpdate();
+    });
+  }
+
+  testSynonym(){
+    this.setState({ synonymRun: true });
+    console.log("Testing getSynonym...");
+    SynonymMap.getSynonym("wow")
+    .then( response => {
+        console.log("getSynonym returned...");
+        if(!response.key){
+          this.setState({ synonymDone: true, text: this.state.text + "\nNo Synonym returned", errCount: this.state.errCount +1 });
+          this.forceUpdate();
+        }else{
+          this.setState({ synonymDone: true, synonym: response.synonym, text: this.state.text + "\nSynonym: "+ response.synonym +"\n"});
+          this.forceUpdate();
+        }
+    })
+    .catch(err => {
+        console.log("getSynonym returned with error...");
+        this.setState({ synonymDone: true, text: this.state.text +"\n"+ err.message, errCount: this.state.errCount+1 });
+        this.forceUpdate();
+    });
+  }
+
+  testSynonyms(){
+    this.setState({ synonymsRun: true });
+    console.log("Testing getSynonyms...");
+    SynonymMap.getSynonyms("wow")
+    .then( response => {
+        console.log("getSynonyms returned...");
+        if(!response.key){
+          this.setState({ synonymsDone: true, text: this.state.text + "\nNo Synonyms returned", errCount: this.state.errCount +1 });
+          this.forceUpdate();
+        }else{
+          this.setState({ synonymsDone: true, 
+                          synonyms: response.synonyms, text: this.state.text + "\nSynonyms Count: "+ response.count +": "+ response.synonyms +"\n"});
+          this.forceUpdate();
+        }
+    })
+    .catch(err => {
+        console.log("getSynonym returned with error...");
+        this.setState({ synonymsDone: true, text: this.state.text +"\n"+ err.message, errCount: this.state.errCount+1 });
+        this.forceUpdate();
+    });
+  }
+
+  tick() {
+    if( !(this.state.synonymKeysRun === true) ) { this.testSynonymKeys(); }
+    if( !(this.state.synonymRun === true) )  { this.testSynonym(); }// might be there, might not. Should still get a 200 response.
+    if( !(this.state.synonymsRun === true) )  { this.testSynonyms(); } 
+    this.setState({testComplete: (this.state.synonymDone === true && this.state.synonymKeysDone === true && this.state.synonymsDone )})
+    if(this.state.testComplete === true){
+      console.log("Stopping loop... "+ this.state.errCount + " errors");
+      this.setState({text: this.state.text +"\nTesting Complete with "+ this.state.errCount + " errors"});
+      clearInterval(this.timerId);
+    }else{
+      this.setState({text: this.state.text +".", loopCount: this.state.loopCount +1 });
+      if(this.state.loopCount > this.state.loopMax){
+        this.setState({errCount: this.state.errCount +1});
+        this.setState({text: this.state.text +"\nTest failed with Timeout and "+ this.state.errCount +" errors"});
+        clearInterval(this.timerId);
+      }
+    }
+    this.forceUpdate();
   }
 
   render(){

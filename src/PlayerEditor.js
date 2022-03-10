@@ -1,18 +1,19 @@
 import React, {Component} from "react";
 import "./App.css";
 // eslint-disable-next-line no-unused-vars
-import AgentInfo, {raceOptions     as races,
-                   genderOptions   as genders, 
-                   skinOptions     as skinColors, 
-                   eyeOptions      as eyeColors, 
-                   hairOptions     as hairColors, 
-                   clothOptions    as clothColors, 
-                   heightOptions   as heights, 
-                   weightOptions   as weights, 
-                   cleanOptions    as cleanliness, 
-                   beautyOptions   as beauties, 
-                   strengthOptions as strengths} 
-       from "./AgentInfo";
+import AgentInfo from "./AgentInfo";
+
+let raceOptions     = [];
+let genderOptions   = [];
+let skinOptions     = [];
+let eyeOptions      = [];
+let hairOptions     = [];
+let clothOptions    = [];
+let heightOptions   = [];
+let weightOptions   = [];
+let cleanOptions    = [];
+let beautyOptions   = [];
+let strengthOptions = [];
 
 class PlayerEditor extends Component{
 
@@ -21,23 +22,27 @@ class PlayerEditor extends Component{
     this.composeOptions =this.composeOptions.bind(this);
   }
 
-  composeOptions(arrList){
-    return arrList.map((item) => <option key={item.id} value={item.id}>{item.text}</option>);
+  composeOptions(mapItems){
+    return Array.from(mapItems).map((item) => <option key={item.id} value={item.id}>{item.text}</option>);
   }
 
-  render(){
+  static logIt( msg ){ /*console.log( "PlayerEditor: "+ msg ); */ }
 
-    let raceOptions     = this.composeOptions(races);     
-    let genderOptions   = this.composeOptions(genders);     
-    let skinOptions     = this.composeOptions(skinColors);
-    let eyeOptions      = this.composeOptions(eyeColors);
-    let hairOptions     = this.composeOptions(hairColors);
-    let clothOptions    = this.composeOptions(clothColors);
-    let heightOptions   = this.composeOptions(heights);
-    let weightOptions   = this.composeOptions(weights);
-    let cleanOptions    = this.composeOptions(cleanliness);
-    let beautyOptions   = this.composeOptions(beauties);
-    let strengthOptions = this.composeOptions(strengths);
+  render(){
+    PlayerEditor.logIt( "rendering player options...");
+    if (raceOptions.length == 0){
+      raceOptions     = this.composeOptions(AgentInfo.getOptionsFor("race"));
+      genderOptions   = this.composeOptions(AgentInfo.getOptionsFor("gender"));
+      skinOptions     = this.composeOptions(AgentInfo.getOptionsFor("skin"));
+      eyeOptions      = this.composeOptions(AgentInfo.getOptionsFor("eye"));
+      hairOptions     = this.composeOptions(AgentInfo.getOptionsFor("hair"));
+      clothOptions    = this.composeOptions(AgentInfo.getOptionsFor("cloth"));
+      heightOptions   = this.composeOptions(AgentInfo.getOptionsFor("height"));
+      weightOptions   = this.composeOptions(AgentInfo.getOptionsFor("weight"));
+      cleanOptions    = this.composeOptions(AgentInfo.getOptionsFor("clean"));
+      beautyOptions   = this.composeOptions(AgentInfo.getOptionsFor("beauty"));
+      strengthOptions = this.composeOptions(AgentInfo.getOptionsFor("strength"));
+    }
 
     return(
       <table className="PlayerProfileTable">
@@ -119,7 +124,7 @@ class PlayerEditor extends Component{
           </tbody>
       </table>
     );
-  }   
+  }
 }
 
 export default PlayerEditor;
