@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 node_modules
 dist
 .vscode
 build
+=======
+node_modules
+dist
+.vscode
+build
+>>>>>>> aws_polly_support

@@ -1,24 +1,25 @@
 import React, {Component} from "react";
-import {hot}              from "react-hot-loader";
 import "./App.css";
 
 import LocationSelector   from "./LocationSelector";
 import NPCSelector        from "./NPCSelector";
 import PlayerEditor       from "./PlayerEditor";
 import DialogOptions      from "./DialogOptions";
+import AudioFlags         from "./AudioFlags";
 
 class MainContent extends Component{
-    constructor(props){
-      super(props);
-    }
 
     render(){
+      console.log("MainContent rendering...");
+      let zoneInfo = this.props.gameState.location.getZone(this.props.gameState.location.zone);
+      let zoneName = zoneInfo.display ?? "";
+
       return(
           <div className="MainContent">
             <table className="MainContentTable">
               <tbody>
                 <tr>
-                  <td className="PlayerDialogPane">
+                  <td className="PlayerDialogPane">{zoneName}<br/>
                   <textarea rows="32" cols="70" placeholder="" 
                             id="playerview" name="playerview" maxLength="1024" 
                             value={this.props.gameState.instext} readOnly />
@@ -27,8 +28,13 @@ class MainContent extends Component{
                     <DialogOptions    gameState={this.props.gameState} />
                   </td>
                   <td className="MainContentRightPane">
-                    <LocationSelector gameState={this.props.gameState} />
-                    <NPCSelector      gameState={this.props.gameState} />
+                    <section><table>
+                      <tr><td><LocationSelector gameState={this.props.gameState} /></td>
+                          <td rowSpan="2"><AudioFlags gameState={this.props.gameState} /></td>
+                      </tr>
+                      <tr><td><NPCSelector      gameState={this.props.gameState} /></td>
+                      </tr>
+                    </table></section>
                     <PlayerEditor     gameState={this.props.gameState} />
                   </td>
                 </tr>

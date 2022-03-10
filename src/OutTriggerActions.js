@@ -1,9 +1,9 @@
 
 class OutTriggerActions {
     constructor(props){
-        this.message = props.message ?? new String();
-        this.trigger = props.trigger ?? new String();
-        this.actions = props.actions ?? new String();
+        this.message = props.message ?? "";
+        this.trigger = props.trigger ?? "";
+        this.actions = props.actions ?? "";
     }
 }
 export default OutTriggerActions;
